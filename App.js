@@ -76,7 +76,7 @@ function App() {
   }, []);
 
   const clearPersistedUser = useCallback(() => {
-    Object.values(STORAGE_KEYS).forEach(key => storage.delete(key));
+    Object.values(STORAGE_KEYS).forEach(key => storage.delete?.(key));
   }, []);
 
   const updateField = field => value => {
