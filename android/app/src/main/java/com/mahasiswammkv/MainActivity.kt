@@ -1,4 +1,4 @@
-package com.mahasiswammkv
+package com.mahasiswaMMKV
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

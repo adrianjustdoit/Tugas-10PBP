@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "994414860974",
+    "project_id": "pbp-mahasiswa",
+    "storage_bucket": "pbp-mahasiswa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994414860974:android:711a40f345387111ad2b3f",
+        "android_client_info": {
+          "package_name": "com.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzmm4Xv3y73I6j3HyzH87KPoLE8_ivyQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994414860974:android:bb625e63951cad57ad2b3f",
+        "android_client_info": {
+          "package_name": "com.mahasiswaMMKV"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzmm4Xv3y73I6j3HyzH87KPoLE8_ivyQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

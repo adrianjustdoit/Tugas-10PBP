@@ -1,4 +1,4 @@
-package com.mahasiswammkv
+package com.mahasiswaMMKV
 
 import android.app.Application
 import com.facebook.react.PackageList
