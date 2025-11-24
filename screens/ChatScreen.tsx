@@ -1,5 +1,5 @@
 // screens/ChatScreen.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { createMMKV } from 'react-native-mmkv';
 
 import {
   addDoc,
@@ -20,6 +21,7 @@ import {
 } from '../firebase';
 import { RootStackParamList } from '../App';
 
+// ---------- TYPES ----------
 type FirestoreTimestamp = {
   seconds: number;
   nanoseconds: number;
@@ -28,34 +30,67 @@ type FirestoreTimestamp = {
 type MessageType = {
   id: string;
   text: string;
-  user: string;      // nama pengirim
-  userNim: string;   // NIM pengirim
+  user: string;     // nama pengirim
+  userNim: string;  // NIM pengirim
   createdAt: FirestoreTimestamp | null;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 
-const ChatScreen: React.FC<Props> = ({ route }) => {
+// ---------- MMKV UNTUK LOGOUT ----------
+const storage = createMMKV();
+const STORAGE_KEYS = {
+  nim: 'user_nim',
+  nama: 'user_nama',
+  email: 'user_email',
+};
+
+const ChatScreen: React.FC<Props> = ({ route, navigation }) => {
   const { name, nim } = route.params;
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<MessageType[]>([]);
 
-  useEffect(() => {
+  // Fungsi logout: bersihkan MMKV + kembali ke Login
+  const handleLogout = useCallback(() => {
+    Object.values(STORAGE_KEYS).forEach(key => {
+      storage.set(key, ''); // kosongkan supaya tidak auto-login
+    });
+
+    // Optional: reset state lokal chat
+    setMessage('');
+    setMessages([]);
+
+    // Kembali ke layar Login dan hapus stack Chat
+    navigation.replace('Login');
+  }, [navigation]);
+
+  // Pasang listener pesan
+    useEffect(() => {
     const q = query(messagesCollection, orderBy('createdAt', 'asc'));
 
     const unsubscribe = onSnapshot(q, snapshot => {
-      const list: MessageType[] = [];
-      snapshot.forEach(docSnap => {
+        const list: MessageType[] = [];
+        snapshot.forEach((docSnap: any) => {   // <--- tambahkan : any di sini
         list.push({
-          id: docSnap.id,
-          ...(docSnap.data() as Omit<MessageType, 'id'>),
+            id: docSnap.id,
+            ...(docSnap.data() as Omit<MessageType, 'id'>),
         });
-      });
-      setMessages(list);
+        });
+        setMessages(list);
     });
 
     return () => unsubscribe();
-  }, []);
+    }, []);
+
+
+  // Tambah tombol Logout di header kanan
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button title="Logout" onPress={handleLogout} />
+      ),
+    });
+  }, [navigation, handleLogout]);
 
   const sendMessage = async () => {
     const trimmed = message.trim();
@@ -102,7 +137,7 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
           value={message}
           onChangeText={setMessage}
         />
-        <Button title="Kirim" onPress={sendMessage} />
+        <Button title="KIRIM" onPress={sendMessage} />
       </View>
     </View>
   );
@@ -110,9 +145,7 @@ const ChatScreen: React.FC<Props> = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  listContent: {
-    padding: 10,
-  },
+  listContent: { padding: 10 },
   msgBox: {
     padding: 10,
     marginVertical: 6,

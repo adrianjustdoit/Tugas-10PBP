@@ -52,7 +52,7 @@ const initialFormState: FormState = {
   password: '',
 };
 
-const normalizeNim = (value: string) => value.trim().toLowerCase();
+const normalizeNim = (value: string) => value.trim();
 const trimValue = (value: string) => value.trim();
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
@@ -67,11 +67,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     const email = storage.getString(STORAGE_KEYS.email) ?? '';
 
     if (nim && nama) {
-      // Langsung masuk ke chat
       navigation.replace('Chat', { name: nama, nim });
-    } else {
-      // Tetap di layar login/register
-      // (tidak perlu set state lain di sini)
     }
   }, [navigation]);
 
@@ -146,8 +142,15 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
     try {
       const docRef = doc(mahasiswaCollection, nimKey);
+
+      // SELALU baca dari server (bukan cache)
       const snapshot = await getDocFromServer(docRef);
-      const docExists = snapshot.exists;
+
+      // ==== LOGIKA FIX: kompatibel method/property ====
+      const existsRaw: any = (snapshot as any).exists;
+      const docExists: boolean =
+        typeof existsRaw === 'function' ? existsRaw.call(snapshot) : !!existsRaw;
+      // ================================================
 
       console.log('Auth attempt:', {
         mode: authMode,
@@ -157,7 +160,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         snapshotId: snapshot.id,
       });
 
-      // REGISTER
+      // ---------- MODE REGISTER ----------
       if (authMode === 'register') {
         if (docExists) {
           setLoading(false);
@@ -180,7 +183,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         return;
       }
 
-      // LOGIN
+      // ---------- MODE LOGIN ----------
       if (!docExists) {
         setLoading(false);
         Alert.alert('Error', 'NIM belum terdaftar.');
@@ -213,13 +216,20 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       setLoading(false);
       Alert.alert('Error', 'Terjadi kesalahan. Coba lagi.');
     }
-  }, [authMode, buildUserPayload, form, navigation, persistUser, validateForm]);
+  }, [
+    authMode,
+    buildUserPayload,
+    form,
+    navigation,
+    persistUser,
+    validateForm,
+  ]);
 
-  const handleLogoutClearLocal = () => {
+  const handleLogoutClearLocal = useCallback(() => {
     clearPersistedUser();
     resetForm();
     setAuthMode('login');
-  };
+  }, [clearPersistedUser, resetForm]);
 
   const titleText = useMemo(
     () =>
