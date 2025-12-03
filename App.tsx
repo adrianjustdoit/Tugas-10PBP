@@ -23,7 +23,7 @@ const App: React.FC = () => {
         <Stack.Screen
           name="Login"
           component={LoginScreen}
-          options={{ title: 'Login / Register Mahasiswa' }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Chat"
@@ -34,7 +34,7 @@ const App: React.FC = () => {
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  ); 
 };
 
 export default App;
