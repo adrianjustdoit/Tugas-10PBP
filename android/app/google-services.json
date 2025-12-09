@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "474297112910",
+    "project_id": "projectmmkv-auth",
+    "storage_bucket": "projectmmkv-auth.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474297112910:android:318ce7107a83996e12661f",
+        "android_client_info": {
+          "package_name": "com.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGtf6Q-CYCbuMIHDrDUsmpa059Zt6KJ6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474297112910:android:041d99ee3be8f31112661f",
+        "android_client_info": {
+          "package_name": "com.mahasiswaMMKV"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGtf6Q-CYCbuMIHDrDUsmpa059Zt6KJ6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474297112910:android:f160e256f60aac8112661f",
+        "android_client_info": {
+          "package_name": "com.myfirebasemmkvapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGtf6Q-CYCbuMIHDrDUsmpa059Zt6KJ6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
